@@ -67,9 +67,18 @@ class EventsController < ApplicationController
 
   def register_user
     @event = Event.find(params[:id])
-    user = User.where(email: params[:email]).take
-    unless user.nil?
-      @event.users << user
+    email = params[:email]
+    user = User.where(email: email)
+    if user && user.take
+      user = user.take
+      if @event.users.where(id: user.id).any?
+        flash[:alert] = 'El usuario ya fue registrado anteriormente'
+      else 
+        @event.users << user
+        flash[:notice] = 'Usuario registrado exitosamente'
+      end
+    else 
+      flash[:alert] = 'El usuario no existe en nuestros registros'
     end
     redirect_to register_to_event_path(@event)
   end
