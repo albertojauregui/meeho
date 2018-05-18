@@ -13,12 +13,6 @@
 </table>
 <hr>
 <%= form_tag controller: "events", action: "register_user", method: :post do %>
-  <% if flash[:notice] %>
-    <div class="alert alert-info"><%= flash[:notice] %></div>
-  <% end %>
-  <% if flash[:alert] %>
-    <div class="alert alert-danger"><%= flash[:alert] %></div>
-  <% end %>
   <%= label_tag "Email" %>
   <%= text_field_tag :email %>
 
