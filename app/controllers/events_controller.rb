@@ -1,5 +1,7 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy, :register, :register_user]
+  before_action :set_user, only: :register_user
+  before_action :is_valid_email?, only: :register_user
   before_action :is_event_full?, only: :register_user
 
   # GET /events
@@ -68,13 +70,11 @@ class EventsController < ApplicationController
 
   def register_user
     @event = Event.find(params[:id])
-    email = params[:email]
-    user = User.where(email: email).take
-    if user.nil? || @event.users.include?(user)
+    if @user.nil? || @event.users.include?(@user)
       redirect_to register_to_event_path(@event), notice: 'Imposible agregar usuario a evento'
       return
     end
-    @event.users << user
+    @event.users << @user
     redirect_to register_to_event_path(@event), notice: 'Usuario se agrego con exito'
   end
 
@@ -82,6 +82,11 @@ class EventsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_event
       @event = Event.find(params[:id])
+    end
+
+    def set_user 
+      email = params[:email]
+      @user = User.where(email: email).take
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -92,6 +97,12 @@ class EventsController < ApplicationController
     def is_event_full?
       if @event.is_event_full?
         redirect_to register_to_event_path(@event), notice: "El evento #{@event.name} esta lleno"
+      end
+    end
+
+    def is_valid_email?
+      if params[:email].blank? || params[:email] !~ User::VALID_EMAIL_REGEX
+        redirect_to register_to_event_path(@event), notice: "Debes especificar un correo electrónico"
       end
     end
 end
