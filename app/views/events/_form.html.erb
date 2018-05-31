@@ -1,4 +1,4 @@
-<%= form_with(model: event, local: true, html: {class: "form-horizontal"}) do |form| %>
+<%= form_with(model: event, local: true) do |form| %>
   <% if event.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(event.errors.count, "error") %> prohibited this event from being saved:</h2>
@@ -11,42 +11,32 @@
     </div>
   <% end %>
 
-  <div class="form-group row">
-    <%= form.label :name, :class=>"col-sm-2 col-form-label text-right" %>
-    <div class="col-sm-10">
-      <%= form.text_field :name, :class=>"form-control" %>
-    </div>
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :event_name %>
   </div>
 
-  <div class="form-group row">
-    <%= form.label :start_date, :class=>"col-sm-2 col-form-label text-right" %>
-    <div class="col-sm-10">
-      <%= form.datetime_select :start_date %>  
-    </div>
+  <div class="field">
+    <%= form.label :start_date %>
+    <%= form.datetime_select :start_date, id: :event_start_date %>
   </div>
 
-  <div class="form-group row">
-    <%= form.label :end_date, :class=>"col-sm-2 col-form-label text-right" %>
-    <div class="col-sm-10">
-      <%= form.datetime_select :end_date %>
-    </div>
+  <div class="field">
+    <%= form.label :end_date %>
+    <%= form.datetime_select :end_date, id: :event_end_date %>
   </div>
 
-  <div class="form-group row">
-    <%= form.label :max_students, :class=>"col-sm-2 col-form-label text-right" %>
-    <div class="col-sm-10">
-      <%= form.number_field :max_students, :class=>"form-control" %>
-    </div>
+  <div class="field">
+    <%= form.label :max_students %>
+    <%= form.number_field :max_students, id: :event_max_students %>
   </div>
 
-  <div class="form-group row">
-    <%= form.label :description, :class=>"col-sm-2 col-form-label text-right" %>
-    <div class="col-sm-10">
-      <%= form.text_area :description, :class=>"form-control" %>
-    </div>
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description, id: :event_description %>
   </div>
 
   <div class="actions">
-    <%= form.submit :class=>"btn btn-primary" %>
+    <%= form.submit %>
   </div>
 <% end %>
